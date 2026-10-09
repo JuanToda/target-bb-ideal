@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Target BB Ideal — Sehat Bertahap</title>
+<style>
+:root{--ink:#17231f;--muted:#64736c;--bg:#f4f7f2;--card:#fff;--green:#176b4d;--lime:#d8f36a;--line:#e2e9e1;--orange:#fff1d7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif}
+.wrap{max-width:1040px;margin:auto;padding:28px 18px 56px}.hero{background:#153e32;color:#fff;border-radius:28px;padding:34px;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;width:230px;height:230px;border:40px solid #ffffff12;border-radius:50%;right:-45px;top:-60px}
+.eyebrow{text-transform:uppercase;letter-spacing:.13em;font-size:.76rem;font-weight:800;color:var(--lime)}h1{font-size:clamp(2rem,5vw,3.6rem);line-height:1.04;letter-spacing:-.045em;margin:12px 0} .hero p{max-width:620px;color:#d9e8df;margin:14px 0 0}
+.layout{display:grid;grid-template-columns: minmax(280px,.85fr) minmax(0,1.15fr);gap:20px;margin-top:20px}.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 8px 24px #173d2b08}
+h2{font-size:1.22rem;letter-spacing:-.02em;margin:0 0 16px}label{display:block;font-size:.9rem;font-weight:700;margin:14px 0 6px}input{width:100%;border:1px solid #ccd8ce;background:#fbfdfb;border-radius:12px;padding:13px 14px;font:inherit;color:var(--ink);outline:none}select:focus{border-color:var(--green);box-shadow:0 0 0 3px #176b4d20}input:focus{border-color:var(--green);box-shadow:0 0 0 3px #176b4d20}.hint{font-size:.82rem;color:var(--muted);margin:5px 0 0}.btn{border:0;border-radius:13px;padding:14px 18px;background:var(--lime);color:#1a3024;font:inherit;font-weight:850;cursor:pointer;width:100%;margin-top:20px}.btn:hover{filter:brightness(.96)}.optional{display:flex;align-items:center;gap:10px;margin-top:18px;color:var(--muted);font-size:.9rem}.optional input{width:auto;accent-color:var(--green)}
+.result-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.pill{display:inline-block;background:#e6f5eb;color:#176b4d;border-radius:99px;padding:6px 11px;font-size:.78rem;font-weight:800}.big{font-size:clamp(2.2rem,5vw,3.3rem);letter-spacing:-.05em;font-weight:850;line-height:1.1;margin:12px 0 6px}.muted{color:var(--muted)}.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0}.metric{padding:15px;border-radius:16px;background:#f4f8f3}.metric span{display:block;color:var(--muted);font-size:.8rem}.metric strong{font-size:1.18rem;display:block;margin-top:4px}.bar{height:10px;background:#e8eee8;border-radius:99px;overflow:hidden;margin:10px 0}.bar>div{height:100%;width:0;background:var(--green);border-radius:99px;transition:width .3s}.notice{padding:13px 15px;border-radius:14px;background:var(--orange);font-size:.88rem;margin-top:14px}.section{margin-top:20px}.plan-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.plan{background:#f7faf6;border:1px solid var(--line);border-radius:16px;padding:17px}.plan h3{font-size:1rem;margin:0 0 8px}.plan ul{padding-left:18px;margin:8px 0 0}.plan li{margin:5px 0;font-size:.91rem}.hidden{display:none!important}.sources{font-size:.84rem;color:var(--muted)}a{color:var(--green);text-underline-offset:3px}.footer{font-size:.8rem;color:var(--muted);margin:22px 4px 0}.error{color:#a42b25;font-size:.86rem;margin-top:8px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}.hero{padding:26px}.plan-grid{grid-template-columns:1fr}.wrap{padding:16px 12px 36px}.card{padding:20px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="hero">
+  <div class="eyebrow">Wellness • mulai dari langkah kecil</div>
+  <h1>Target BB Ideal</h1>
+  <p>Kenali rentang berat badan yang sehat, lalu susun kebiasaan olahraga dan makan yang realistis. Fokus pada kesehatan—bukan mengejar angka dengan cara ekstrem.</p>
+</header>
+<main class="layout">
+  <section class="card">
+    <h2>Data kamu</h2>
+    <form id="form">
+      <label for="weight">Berat badan sekarang (kg)</label>
+      <input id="weight" type="number" min="2" max="400" step=".1" placeholder="Contoh: 68" required>
+      <label for="height">Tinggi badan (cm)</label>
+      <input id="height" type="number" min="50" max="250" step=".1" placeholder="Contoh: 170" required>
+      <label for="age">Umur (tahun)</label>
+      <input id="age" type="number" min="2" max="120" step="1" placeholder="Contoh: 22" required>
+      <p class="hint">Gunakan angka pengukuran terbaru agar hasil lebih mendekati kondisi saat ini.</p>
+      <label class="optional"><input id="showPlan" type="checkbox" checked> Tampilkan program olahraga & makanan</label>
+      <button class="btn" type="submit">Hitung target saya ↗</button>
+      <div id="error" class="error" role="alert"></div>
+    </form>
+  </section>
+  <section class="card" aria-live="polite">
+    <div class="result-top"><div><h2>Hasil perhitungan</h2><p class="muted" style="margin:0">Isi data lalu tekan tombol hitung.</p></div><span class="pill">Kalkulator</span></div>
+    <div id="empty" class="muted" style="padding:28px 0">Hasil BMI, estimasi rentang target, dan saran akan muncul di sini.</div>
+    <div id="results" class="hidden">
+      <div class="muted">Indeks Massa Tubuh (IMT / BMI)</div>
+      <div class="big" id="bmi">—</div>
+      <span class="pill" id="category">—</span>
+      <div class="bar"><div id="bar"></div></div>
+      <p id="explain" class="muted"></p>
+      <div class="metrics">
+        <div class="metric"><span>Rentang target perkiraan</span><strong id="target">—</strong></div>
+        <div class="metric"><span>Perbedaan dari rentang</span><strong id="difference">—</strong></div>
+      </div>
+      <div id="advice" class="notice"></div>
+      <div id="teen" class="notice hidden"></div>
+    </div>
+  </section>
+</main>
+<section id="plans" class="card section">
+  <h2>Program kebiasaan sehat</h2>
+  <p class="muted">Program awal yang bisa disesuaikan dengan kemampuan. Mulai ringan, tingkatkan bertahap, dan berhenti jika terasa nyeri atau pusing.</p>
+  <div class="plan-grid">
+    <div class="plan"><h3>🏃 Olahraga mingguan</h3>
+      <ul><li><b>Senin:</b> jalan cepat 20–30 menit</li><li><b>Selasa:</b> latihan kekuatan ringan 15–20 menit (squat ke kursi, wall push-up)</li><li><b>Rabu:</b> jalan santai atau bersepeda 20–30 menit</li><li><b>Kamis:</b> istirahat aktif dan peregangan ringan</li><li><b>Jumat:</b> jalan cepat 20–30 menit</li><li><b>Sabtu:</b> aktivitas yang disukai, misalnya menari atau badminton</li><li><b>Minggu:</b> istirahat / jalan santai</li></ul>
+      <p class="hint">Untuk orang dewasa, WHO menganjurkan 150–300 menit aktivitas aerobik intensitas sedang per minggu dan latihan kekuatan minimal 2 hari. Mulai di bawah target jika belum terbiasa.</p>
+    </div>
+    <div class="plan"><h3>🥗 Makanan (opsional)</h3>
+      <ul><li>Usahakan makan teratur dan tidak melewatkan makan demi menurunkan berat badan.</li><li>Isi piring dengan sayur dan buah, sumber protein (telur, ikan, tempe, tahu, ayam), serta karbohidrat (nasi, kentang, jagung, atau ubi).</li><li>Pilih air putih lebih sering; batasi minuman manis jika sering dikonsumsi.</li><li>Sesuaikan porsi dengan rasa lapar, aktivitas, budaya, dan anggaran—tidak perlu menghindari satu kelompok makanan.</li><li>Contoh sederhana: nasi + ikan/tempe + sayur bening + buah.</li></ul>
+      <p class="hint">Ini contoh umum, bukan menu medis atau hitungan kalori personal.</p>
+    </div>
+  </div>
+</section>
+
+<section class="card section" id="ai-builder">
+  <h2>✨ Generator program personal</h2>
+  <p class="muted">Buat jadwal olahraga dan ide menu berdasarkan tujuan, waktu, alat yang tersedia, serta preferensi makanan. Mode AI generatif aktif saat website dijalankan bersama server; tanpa server, generator menggunakan rekomendasi aturan dasar.</p>
+  <div class="plan-grid">
+    <div>
+      <label for="goal">Tujuan utama</label>
+      <select id="goal" style="width:100%;border:1px solid #ccd8ce;border-radius:12px;padding:13px;font:inherit;background:#fbfdfb">
+        <option value="maintain">Menjaga kebugaran dan berat badan</option>
+        <option value="lose">Mengelola berat badan secara bertahap</option>
+        <option value="gain">Mendukung kenaikan berat badan secara sehat</option>
+        <option value="strength">Meningkatkan kekuatan dan stamina</option>
+      </select>
+      <label for="level">Level aktivitas saat ini</label>
+      <select id="level" style="width:100%;border:1px solid #ccd8ce;border-radius:12px;padding:13px;font:inherit;background:#fbfdfb">
+        <option value="beginner">Pemula / jarang olahraga</option>
+        <option value="intermediate">Kadang-kadang olahraga</option>
+        <option value="active">Sudah aktif berolahraga</option>
+      </select>
+      <label for="minutes">Waktu per sesi (menit)</label>
+      <select id="minutes" style="width:100%;border:1px solid #ccd8ce;border-radius:12px;padding:13px;font:inherit;background:#fbfdfb">
+        <option value="15">15 menit</option><option value="30" selected>30 menit</option><option value="45">45 menit</option><option value="60">60 menit</option>
+      </select>
+    </div>
+    <div>
+      <label for="equipment">Peralatan</label>
+      <select id="equipment" style="width:100%;border:1px solid #ccd8ce;border-radius:12px;padding:13px;font:inherit;background:#fbfdfb">
+        <option value="none">Tanpa alat / di rumah</option><option value="basic">Matras atau resistance band</option><option value="gym">Gym / beban</option>
+      </select>
+      <label for="food">Preferensi makanan</label>
+      <select id="food" style="width:100%;border:1px solid #ccd8ce;border-radius:12px;padding:13px;font:inherit;background:#fbfdfb">
+        <option value="omnivore">Makan beragam (termasuk hewani)</option><option value="vegetarian">Vegetarian</option><option value="budget">Hemat, bahan mudah ditemukan</option><option value="none">Tidak perlu rekomendasi makanan</option>
+      </select>
+      <label for="limitations">Catatan opsional</label>
+      <input id="limitations" type="text" maxlength="240" placeholder="Contoh: tidak suka lari, alergi kacang">
+      <p class="hint">Jangan masukkan informasi pribadi yang sensitif. Catatan dipakai untuk menyesuaikan saran.</p>
+    </div>
+  </div>
+  <button class="btn" id="generate" type="button">Generate program personal ✨</button>
+  <p class="hint" id="ai-status" aria-live="polite">Pilih preferensi lalu generate. Program tidak menggantikan saran tenaga kesehatan.</p>
+  <div id="ai-output" class="section hidden"></div>
+</section>
+
+<section class="card section">
+  <h2>Dasar & sumber</h2>
+  <p class="sources">Untuk usia dewasa, kalkulator ini memakai IMT sebagai alat skrining dan menampilkan rentang IMT 18,5–22,9 sebagai perkiraan rentang sehat yang lebih konservatif untuk konteks Asia. IMT bukan diagnosis dan tidak membedakan massa otot dari lemak. Untuk usia di bawah 20 tahun, hasil angka target tidak dihitung karena penilaian perlu mempertimbangkan usia, jenis kelamin, dan kurva pertumbuhan.</p>
+  <ul class="sources">
+    <li><a href="https://www.cdc.gov/bmi/" target="_blank" rel="noopener">CDC — BMI: pengukuran skrining dan kategori dewasa/anak</a></li>
+    <li><a href="https://www.cdc.gov/bmi/child-teen-calculator/calculator.html" target="_blank" rel="noopener">CDC — kalkulator BMI anak dan remaja berdasarkan umur serta jenis kelamin</a></li>
+    <li><a href="https://www.who.int/initiatives/behealthy/physical-activity/" target="_blank" rel="noopener">WHO — rekomendasi aktivitas fisik</a></li>
+  </ul>
+</section>
+<p class="footer">Catatan: hasil ini adalah estimasi edukatif, bukan diagnosis atau pengganti konsultasi dokter/ahli gizi. Jika kamu berusia di bawah 20 tahun, sedang hamil, punya kondisi medis, atau mengalami perubahan berat badan yang tidak disengaja, mintalah saran tenaga kesehatan.</p>
+</div>
+<script>
+const form=document.getElementById('form');
+const $=id=>document.getElementById(id);
+const fmt=n=>n.toLocaleString('id-ID',{minimumFractionDigits:1,maximumFractionDigits:1});
+form.addEventListener('submit',e=>{
+ e.preventDefault(); $('error').textContent='';
+ const w=Number($('weight').value), h=Number($('height').value), age=Number($('age').value);
+ if(!w||!h||!age||w<2||w>400||h<50||h>250||age<2||age>120){$('error').textContent='Periksa kembali data. Masukkan angka yang masuk akal untuk berat, tinggi, dan umur.';return;}
+ const bmi=w/((h/100)**2);
+ $('empty').classList.add('hidden');$('results').classList.remove('hidden');
+ $('bmi').textContent=fmt(bmi);
+ $('bar').style.width=Math.max(4,Math.min(100,(bmi/40)*100))+'%';
+ const adult=age>=20;
+ $('teen').classList.toggle('hidden',adult);
+ if(!adult){
+   $('category').textContent='Perlu kurva pertumbuhan';
+   $('explain').textContent='IMT anak dan remaja tidak ditafsirkan dengan batas BMI dewasa.';
+   $('target').textContent='Belum ditentukan';
+   $('difference').textContent='—';
+   $('advice').textContent='Untuk usia di bawah 20 tahun, penilaian yang tepat memerlukan umur, jenis kelamin, dan kurva pertumbuhan. Jangan memakai target penurunan berat badan dewasa; konsultasikan dengan dokter atau ahli gizi.';
+   $('teen').textContent='BMI kamu ditampilkan sebagai angka saja, bukan kategori. CDC menggunakan persentil IMT menurut umur dan jenis kelamin untuk anak dan remaja.';
+ }else{
+   let cat,desc;
+   if(bmi<18.5){cat='Di bawah rentang';desc='IMT berada di bawah rentang dewasa yang digunakan kalkulator ini.';}
+   else if(bmi<23){cat='Dalam rentang';desc='IMT berada dalam rentang sehat perkiraan yang digunakan di sini.';}
+   else if(bmi<25){cat='Di atas rentang Asia';desc='Pada konteks Asia, risiko kesehatan dapat meningkat mulai IMT 23; ini bukan diagnosis.';}
+   else if(bmi<30){cat='IMT tinggi';desc='IMT berada di atas rentang yang digunakan. Pertimbangkan evaluasi kesehatan secara menyeluruh.';}
+   else{cat='IMT sangat tinggi';desc='IMT merupakan sinyal untuk mendiskusikan kesehatan dengan tenaga profesional, bukan diagnosis tunggal.';}
+   const min=18.5*(h/100)**2, max=22.9*(h/100)**2;
+   $('category').textContent=cat;$('explain').textContent=desc;
+   $('target').textContent=fmt(min)+'–'+fmt(max)+' kg';
+   if(w<min)$('difference').textContent='+'+fmt(min-w)+' kg menuju rentang';
+   else if(w>max)$('difference').textContent='−'+fmt(w-max)+' kg menuju rentang';
+   else $('difference').textContent='Sudah dalam rentang';
+   if(bmi<18.5)$('advice').textContent='Jangan sengaja menurunkan berat badan. Jika berat turun tanpa sebab atau sulit naik, konsultasikan dengan tenaga kesehatan untuk mencari penyebab dan target yang aman.';
+   else if(bmi<23)$('advice').textContent='Tidak perlu mengejar angka lebih rendah hanya demi penampilan. Pertahankan kebiasaan makan, aktivitas, tidur, dan kesehatan yang terasa baik.';
+   else $('advice').textContent='Angka selisih adalah jarak matematis menuju rentang, bukan kewajiban atau tenggat. Fokus pada perubahan bertahap; konsultasi profesional membantu menetapkan target yang sesuai kondisi kamu.';
+ }
+ $('plans').classList.toggle('hidden',!$('showPlan').checked);
+});
+$('showPlan').addEventListener('change',()=>{$('plans').classList.toggle('hidden',!$('showPlan').checked);});
+</script>
+
+<script>
+(function(){
+ const $ = id => document.getElementById(id);
+ const status = $('ai-status'), output = $('ai-output'), button = $('generate');
+ function currentStats(){
+   const w=Number($('weight').value), h=Number($('height').value), age=Number($('age').value);
+   return {weight:w||null,height:h||null,age:age||null,bmi:(w>0&&h>0)?Number((w/((h/100)**2)).toFixed(1)):null};
+ }
+ function fallbackPlan(p){
+   const beginner=p.level==='beginner', mins=Number(p.minutes);
+   let cardio=beginner?'Jalan santai/cepat sesuai napas':p.level==='intermediate'?'Jalan cepat, bersepeda, atau menari':'Kardio pilihan dengan intensitas yang masih terkontrol';
+   let strength=p.equipment==='gym'?'latihan mesin/beban ringan dengan teknik yang benar':p.equipment==='basic'?'squat ke kursi, wall push-up, glute bridge, dan band row':'squat ke kursi, wall push-up, glute bridge, dan calf raise';
+   if(mins<=15) cardio+=' selama 8–10 menit, lalu pemanasan dan pendinginan singkat';
+   const days=[
+    ['Senin',cardio+' '+Math.max(8,mins-5)+' menit'],
+    ['Selasa','Latihan kekuatan 2 set: '+strength+' (pilih 3–4 gerakan)'],
+    ['Rabu','Aktivitas ringan yang disukai selama '+mins+' menit'],
+    ['Kamis','Pemulihan: jalan santai atau peregangan ringan '+Math.min(15,mins)+' menit'],
+    ['Jumat',cardio+' '+Math.max(8,mins-5)+' menit'],
+    ['Sabtu','Aktivitas pilihan; sesuaikan intensitas dan kondisi tubuh'],
+    ['Minggu','Istirahat atau gerak ringan']
+   ];
+   let food=[];
+   if(p.food==='none') food=['Kamu memilih melewati rekomendasi makanan.'];
+   else if(p.food==='vegetarian') food=['Contoh: nasi + tempe/tahu + sayur + buah.','Variasikan protein dari tempe, tahu, kacang-kacangan, telur/susu jika dikonsumsi.','Minum air putih dan usahakan makan teratur.'];
+   else if(p.food==='budget') food=['Contoh hemat: nasi + telur/tempe + sayur musiman.','Pilihan protein terjangkau: telur, tempe, tahu, ikan lokal, atau kacang-kacangan.','Pilih buah musiman dan air putih lebih sering.'];
+   else food=['Contoh: nasi + ikan/ayam/telur/tempe + sayur + buah.','Variasikan sumber protein, sayur, buah, dan karbohidrat sesuai kebiasaan serta anggaran.','Makan teratur dan minum air putih; tidak perlu menghilangkan satu kelompok makanan.'];
+   const goalText={maintain:'Fokus pada rutinitas yang terasa menyenangkan dan bisa dipertahankan.',lose:'Hindari diet ekstrem atau target penurunan cepat. Perubahan kebiasaan bertahap lebih berkelanjutan.',gain:'Utamakan makan teratur dan makanan bergizi; jika berat sulit naik, konsultasikan dengan tenaga kesehatan.',strength:'Naikkan beban atau repetisi perlahan, dan beri waktu pemulihan otot.'}[p.goal];
+   return {title:'Program personal (mode offline)',intro:goalText,days,food,notes:'Mode offline menggunakan aturan sederhana, bukan model AI generatif. Sesuaikan intensitas dengan kemampuan. '+(p.notes?'Catatanmu: '+p.notes+'. ': '')+'Jika muncul nyeri, pusing, atau sesak yang tidak biasa, hentikan latihan. Ini bukan diagnosis atau rencana medis.'};
+ }
+ function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+ function render(plan, mode){
+   const days=(plan.days||[]).map(d=>`<li><b>${escapeHtml(Array.isArray(d)?d[0]:d.day||'')}</b>: ${escapeHtml(Array.isArray(d)?d[1]:d.activity||d.description||'')}</li>`).join('');
+   const food=(plan.food||plan.meals||[]).map(x=>`<li>${escapeHtml(typeof x==='string'?x:(x.meal||x.description||JSON.stringify(x)))}</li>`).join('');
+   output.innerHTML=`<div class="notice"><b>${escapeHtml(plan.title||'Program personal')}</b><br>${escapeHtml(plan.intro||'')}</div>
+   <div class="plan-grid section"><div class="plan"><h3>📅 Jadwal olahraga</h3><ul>${days||'<li>Belum ada jadwal yang tersedia.</li>'}</ul></div>
+   <div class="plan"><h3>🥗 Ide makanan</h3><ul>${food||'<li>Tidak diminta.</li>'}</ul></div></div>
+   <p class="hint">${escapeHtml(plan.notes||'')}<br><b>Sumber acuan aktivitas:</b> <a href="https://www.who.int/initiatives/behealthy/physical-activity/" target="_blank" rel="noopener">WHO – Physical Activity</a></p>
+   <span class="pill">${mode==='ai'?'Dihasilkan oleh AI server':'Generator offline'}</span>`;
+   output.classList.remove('hidden');
+ }
+ button.addEventListener('click', async()=>{
+   const p={...currentStats(),goal:$('goal').value,level:$('level').value,minutes:$('minutes').value,equipment:$('equipment').value,food:$('food').value,notes:$('limitations').value.trim()};
+   if(p.age && p.age<18){status.textContent='Untuk pengguna di bawah 18 tahun, program dibuat ringan dan tidak berfokus pada penurunan/kenaikan berat badan. Libatkan orang tua/wali dan tenaga kesehatan bila ada kekhawatiran.';}
+   else status.textContent='Sedang membuat program…';
+   button.disabled=true;button.textContent='Sedang generate…';
+   try{
+     const response=await fetch('/api/plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)});
+     if(!response.ok) throw new Error('AI server belum tersedia');
+     const plan=await response.json(); render(plan,'ai'); status.textContent='Program dibuat oleh AI dan perlu ditinjau sesuai kondisi pribadi.';
+   }catch(err){
+     render(fallbackPlan(p),'offline');
+     status.textContent='Server AI belum terhubung; ditampilkan program offline agar tetap bisa digunakan.';
+   }finally{button.disabled=false;button.textContent='Generate program personal ✨';}
+ });
+})();
+</script>
+
+</body>
+</html>
